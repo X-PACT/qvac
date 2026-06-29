@@ -34,7 +34,7 @@ jobs:
       # runs. Also doubles as a check that SOURCE_DATE_EPOCH support works.
       SOURCE_DATE_EPOCH: "1704067200" # 2024-01-01T00:00:00Z
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # 6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # 7.0.0
 
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # 2.2.0
         with:
