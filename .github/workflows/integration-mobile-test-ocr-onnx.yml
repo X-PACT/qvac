@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - name: Checkout addon repository (monorepo)
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # 6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 7.0.1
         with:
           repository: ${{ inputs.repository || github.repository }}
           ref: ${{ inputs.ref || github.ref }}
@@ -72,7 +72,7 @@ jobs:
           fetch-depth: 0
 
       - name: Checkout mobile test framework
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # 6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 7.0.1
         with:
           repository: tetherto/qvac-test-addon-mobile
           ref: ${{ env.TEST_FRAMEWORK_REF }}
@@ -82,7 +82,7 @@ jobs:
 
       - name: Setup Node.js
         if: matrix.platform == 'iOS'
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # 6.3.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # 7.1.0
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -94,7 +94,7 @@ jobs:
 
       - name: Download Android prebuilds (from artifacts)
         if: matrix.platform == 'Android' && !inputs.package
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # 8.0.2
         with:
           path: addon/${{ inputs.workdir || env.PKG_DIR }}/prebuilds
           pattern: ${{ env.PREBUILD_ARTIFACT_PREFIX }}android-*
@@ -103,7 +103,7 @@ jobs:
 
       - name: Download iOS prebuilds (from artifacts)
         if: matrix.platform == 'iOS' && !inputs.package
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # 8.0.2
         with:
           path: addon/${{ inputs.workdir || env.PKG_DIR }}/prebuilds
           pattern: ${{ env.PREBUILD_ARTIFACT_PREFIX }}ios-*
@@ -270,7 +270,7 @@ jobs:
       # Model provisioning for mobile: presigned URLs so the app can download detector + all
       # recognizers at runtime (same set as desktop integration tests).
       - name: Configure AWS credentials via OIDC for model download
-        uses: aws-actions/configure-aws-credentials@8df5847569e6427dd6c4fb1cf565c83acfa8afa7 # 6.0.0
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # 6.3.0
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           aws-region: eu-central-1
@@ -403,14 +403,14 @@ jobs:
       # ---------- Android-specific ----------
       - name: Set up JDK 17
         if: matrix.platform == 'Android'
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # 5.2.0
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # 6.2.0
         with:
           java-version: 17
           distribution: temurin
 
       - name: Setup Android SDK
         if: matrix.platform == 'Android'
-        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # 3.2.2
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # 4.0.4
 
       - name: Generate Android project
         if: matrix.platform == 'Android'
@@ -735,7 +735,7 @@ jobs:
       # Kept as-is from your workflow (only paths above needed monorepo porting)
 
       - name: Configure AWS credentials via OIDC for Device Farm
-        uses: aws-actions/configure-aws-credentials@8df5847569e6427dd6c4fb1cf565c83acfa8afa7 # 6.0.0
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # 6.3.0
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           aws-region: us-west-2
@@ -1570,7 +1570,7 @@ jobs:
 
       - name: Upload raw Device Farm logs
         if: always() && steps.download_df_logs.outputs.artifact_dir
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: df-raw-logs-${{ matrix.platform }}-${{ github.run_number }}
           path: ${{ steps.download_df_logs.outputs.artifact_dir }}
@@ -1579,7 +1579,7 @@ jobs:
 
       - name: Upload mobile performance report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: perf-report-ocr-${{ matrix.platform }}-${{ github.run_number }}
           path: |
@@ -1592,7 +1592,7 @@ jobs:
 
       - name: Refresh AWS credentials for log download
         if: always() && (steps.schedule_run.outputs.run_arn_perf || steps.schedule_run.outputs.run_arn_regular)
-        uses: aws-actions/configure-aws-credentials@8df5847569e6427dd6c4fb1cf565c83acfa8afa7 # 6.0.0
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # 6.3.0
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           aws-region: us-west-2
@@ -1770,7 +1770,7 @@ jobs:
 
       - name: Upload Console Logs
         if: always() && (steps.schedule_run.outputs.run_arn_perf || steps.schedule_run.outputs.run_arn_regular)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: console-logs-ocr-onnx-${{ matrix.platform }}
           path: console-logs/
@@ -1779,7 +1779,7 @@ jobs:
 
       - name: Upload Full Device Farm Logs
         if: always() && (steps.schedule_run.outputs.run_arn_perf || steps.schedule_run.outputs.run_arn_regular)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: devicefarm-logs-ocr-onnx-${{ matrix.platform }}
           path: devicefarm-logs/
@@ -1796,7 +1796,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout addon repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # 6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 7.0.1
         with:
           repository: ${{ inputs.repository || github.repository }}
           ref: ${{ inputs.ref || github.ref }}
@@ -1805,12 +1805,12 @@ jobs:
             packages/ocr-onnx/test/images
 
       - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # 4.4.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # 7.1.0
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Download all perf report artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # 8.0.2
         with:
           pattern: perf-report-ocr-*-${{ github.run_number }}
           path: combined-reports
@@ -1880,7 +1880,7 @@ jobs:
 
       - name: Upload combined HTML report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: HTML-Report-All-Platforms-${{ github.run_number }}
           path: combined-output/performance-report-combined.html
@@ -1889,7 +1889,7 @@ jobs:
 
       - name: Upload per-device HTML reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: HTML-Reports-Per-Device-${{ github.run_number }}
           path: per-device-reports/
