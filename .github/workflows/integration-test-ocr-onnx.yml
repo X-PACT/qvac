@@ -71,12 +71,12 @@ jobs:
     steps:
       - name: Setup Node.js
         if: matrix.platform == 'darwin' || matrix.arch == 'arm64'
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # 6.3.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # 7.1.0
         with:
           node-version: lts/*
 
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # 6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 7.0.1
         with:
           repository: ${{ inputs.repository || github.repository }}
           ref: ${{ inputs.ref || github.ref }}
@@ -99,7 +99,7 @@ jobs:
 
       - name: Download prebuilds from artifact
         if: ${{ !inputs.prebuild_package }}
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # 8.0.2
         with:
           path: ${{ inputs.workdir || env.PKG_DIR }}/prebuilds
           merge-multiple: true
@@ -130,7 +130,7 @@ jobs:
       # Required for all OCR integration tests (param-validation, lifecycle, image-formats,
       # full-ocr-suite, etc.). Provides detector + all recognizers under rec_dyn.
       - name: Configure AWS credentials via OIDC
-        uses: aws-actions/configure-aws-credentials@8df5847569e6427dd6c4fb1cf565c83acfa8afa7 # 6.0.0
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # 6.3.0
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           aws-region: eu-central-1
@@ -169,7 +169,7 @@ jobs:
 
       - name: Upload performance report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: perf-report-ocr-${{ matrix.os }}-${{ matrix.arch }}-${{ github.run_number }}
           path: |
